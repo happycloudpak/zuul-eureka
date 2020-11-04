@@ -13,6 +13,11 @@ zuul:
       path: /svcmesh/**
       service-id: backend-service      
 
+ribbon:  
+  eureka:
+    enabled: true                     # eureka에서 server list를 가져올지 여부 
+  ServerListRefreshInterval: 1000     # server list를 가져올 interval(ms)
+  
 eureka:
   client: 
     register-with-eureka: true 
