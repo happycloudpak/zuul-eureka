@@ -11,7 +11,7 @@ zuul:
   routes:
     svcmesh:
       path: /svcmesh/**
-      service-id: backend-service      
+      service-id: backend-statefulset
 
 ribbon:  
   eureka:
