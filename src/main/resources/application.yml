@@ -17,12 +17,13 @@ zuul:
 ribbon:  
   eureka:
     enabled: true                     # eureka에서 server list를 가져올지 여부 
-  
+    serverListRefreshInterval: 5000
+    
 svcmesh:
   ribbon:   
-    MaxAutoRetries: 3                   # 동일 서비스 연결시도 횟수: 최소 1번 이상으로 지정
-    MaxAutoRetiresNextServer: 2         # 다음 서비스 연결 시도 횟수: 대상 서비스 수 이상으로 지정
-    OkToRetryOnAllOperations: true      # Retry 사용 여부: Failover하려면 true로 지정 
+    MaxAutoRetries: 3      
+    MaxAutoRetiresNextServer: 2
+    OkToRetryOnAllOperations: true     
     ConnectTimeout: 3000
     ReadTimeout: 1000
     retryableStatusCodes: 503, 408, 500, 404
