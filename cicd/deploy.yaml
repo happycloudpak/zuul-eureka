@@ -1,10 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ SERVICE_NAME }}
+  namespace: {{ NAMESPACE }}
   labels:
     app: {{ SERVICE_NAME }}
 spec:
+  serviceName: {{ SERVICE_NAME }}
   selector:
     matchLabels:
       app: {{ SERVICE_NAME }}
@@ -15,15 +17,25 @@ spec:
       labels:
         app: {{ SERVICE_NAME }}
     spec:
+      serviceAccountName: {{ SERVICEACCOUNT }}
       containers:
       - name: {{ SERVICE_NAME }}
         image: {{ IMAGE_NAME }}
         imagePullPolicy: Always
         env:
         - name: SERVER_PORT
-          value: "{{ SERVICE_TARGET_PORT }}"
-        - name: EUREKA_SERVERS
-          value: {{ EUREKA_SERVERS }}          
+          value: "{{ SERVICE_TARGET_PORT }}" 
+        - name: PROFILE
+          value: {{ PROFILE }}
+        envFrom:
+        - configMapRef:
+            name: "{{ SERVICE_NAME }}-cm-common"        
+        - configMapRef:
+            name: "{{ SERVICE_NAME }}-cm-{{ PROFILE }}" 
+        - secretRef:
+            name: "{{ SERVICE_NAME }}-secret-common"           
+        - secretRef:
+            name: "{{ SERVICE_NAME }}-secret-{{ PROFILE }}"
         ports:
         - name: port1
           containerPort: 18180
@@ -39,6 +51,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ SERVICE_NAME }}
+  namespace: {{ NAMESPACE }}  
 spec:
   type: ClusterIP
   selector:
@@ -54,6 +67,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
   name: {{ SERVICE_NAME }}
+  namespace: {{ NAMESPACE }}  
 spec:
   rules:
   - host: {{ SERVICE_HOST }}

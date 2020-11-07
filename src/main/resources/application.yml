@@ -1,46 +1,6 @@
 spring: 
   application: 
     name: zuul-eureka
-server: 
-  port: ${SERVER_PORT:80}
-    
-zuul:
-  host:
-    connect-timeout-millis: 3000
-    socket-timeout-millis: 3000
-  routes:      
-    svcmesh:
-      path: /svcmesh/**
-      service-id: backend-statefulset
-  retryable: true 
-  
-ribbon:  
-  eureka:
-    enabled: true                     # eureka에서 server list를 가져올지 여부 
-    serverListRefreshInterval: 5000
-    
-svcmesh:
-  ribbon:   
-    MaxAutoRetries: 3      
-    MaxAutoRetiresNextServer: 2
-    OkToRetryOnAllOperations: true     
-    ConnectTimeout: 3000
-    ReadTimeout: 1000
-    retryableStatusCodes: 503, 408, 500, 404
-      
-eureka:
-  client: 
-    register-with-eureka: true 
-    fetch-registry: true 
-    service-url:
-      defaultZone: ${EUREKA_SERVERS}
-      
-management:
-  security: 
-    enabled: false
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-
-     
+    profiles: 
+      active: local
+      include: common,common-ribbon
