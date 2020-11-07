@@ -1,6 +1,6 @@
 spring: 
   application: 
     name: zuul-eureka
-    profiles: 
-      active: local
-      include: common,common-ribbon
+  profiles: 
+    active: local
+    include: common,common-ribbon
